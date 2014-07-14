@@ -1,0 +1,5 @@
+library/EIFGENs/
+test/EIFGENs/
+example/example_1/EIFGENs/
+
+**/*.rc
