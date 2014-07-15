@@ -1,8 +1,9 @@
 note
-	description: "Summary description for {EIOC_MUTABLE_INJECTOR_TEST}."
-	author: ""
+	description: "Tests for {EIOC_MUTABLE_INJECTOR}."
+	author: "Victorien Elvinger"
 	date: "$Date$"
 	revision: "$Revision$"
+    testing: "type/manual", "covers/{EIOC_MUTABLE_INJECTOR}"
 
 class
 	EIOC_MUTABLE_INJECTOR_TEST
@@ -14,6 +15,8 @@ inherit
 feature -- Test
 
 	test_has
+		note
+			testing:  "covers/{EIOC_MUTABLE_INJECTOR}.has"
 		local
 			l_injector: EIOC_MUTABLE_INJECTOR
 			l_type: TYPE [like new_cell]
@@ -29,6 +32,8 @@ feature -- Test
 
 	test_can_satisfy
 			-- Test factory with optional dependency, non-optional dependency and without dependency.
+		note
+			testing:  "covers/{EIOC_MUTABLE_INJECTOR}.can_satisfy"
 		local
 			l_injector: EIOC_MUTABLE_INJECTOR
 		do
@@ -45,6 +50,8 @@ feature -- Test
 		end
 
 	test_maybe_instance
+		note
+			testing:  "covers/{EIOC_MUTABLE_INJECTOR}.maybe_instance"
 		local
 			l_injector: EIOC_MUTABLE_INJECTOR
 			l_any: detachable ANY
@@ -71,6 +78,8 @@ feature -- Test
 		end
 
 	test_put
+		note
+			testing:  "covers/{EIOC_MUTABLE_INJECTOR}.put"
 		local
 			l_injector: EIOC_MUTABLE_INJECTOR
 			l_any: detachable ANY
@@ -90,6 +99,8 @@ feature -- Test
 		end
 
 	test_singleton
+		note
+			testing:  "covers/{EIOC_MUTABLE_INJECTOR}.extend_with_singleton"
 		local
 			l_injector: EIOC_MUTABLE_INJECTOR
 			l_singleton: like new_cell
