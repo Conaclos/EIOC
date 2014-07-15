@@ -4,7 +4,7 @@
 	<target name="eioc">
 		<root all_classes="true"/>
 		<option warning="true" full_class_checking="true">
-			<assertions precondition="true" postcondition="false" check="true" invariant="true" loop="true" supplier_precondition="true"/>
+			<assertions precondition="true" postcondition="true" check="true" invariant="true" loop="true" supplier_precondition="true"/>
 		</option>
 		<library name="base" location="$ISE_LIBRARY\library\base\base-safe.ecf"/>
 		<cluster name="eioc" location=".\eioc\" recursive="true"/>
