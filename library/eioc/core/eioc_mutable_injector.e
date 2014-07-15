@@ -184,7 +184,7 @@ feature {NONE} -- Implementation
 			l_maybe_optional: TYPE [detachable ANY]
 			l_injected: SPECIAL [detachable ANY]
 		do
-			if attached {TYPE [TUPLE]} a_factory.generating_type.generic_parameter_type (2) as l_dependencies then
+			if attached {TYPE [detachable TUPLE]} a_factory.generating_type.generic_parameter_type (2) as l_dependencies then
 				create l_injected.make_empty (l_dependencies.generic_parameter_count)
 				across
 					1 |..| l_dependencies.generic_parameter_count as it
@@ -197,7 +197,7 @@ feature {NONE} -- Implementation
 					end
 				end
 
-				if attached new_tuple_from_special (l_dependencies.type_id, l_injected) as l_operands then
+				if attached new_tuple_from_special (detachable_type (l_dependencies.type_id), l_injected) as l_operands then
 					Result := l_operands
 				else
 					check special_to_tuple: False then end
