@@ -17,6 +17,8 @@ inherit
 inherit {NONE}
 
 	REFLECTOR
+		export
+			{NONE} all
 		redefine
 			default_create
 		end
