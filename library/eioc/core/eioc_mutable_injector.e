@@ -36,8 +36,6 @@ feature -- Access (Instance)
 
 	maybe_instance (a_abstraction: TYPE [detachable ANY]): detachable ANY
 			-- <Precursor>
-		local
-			s: STRING
 		do
 			if attached factories.item (type_of_type (attached_type (a_abstraction.type_id))) as l_factory then
 				Result := instance_from (l_factory)
