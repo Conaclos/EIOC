@@ -99,17 +99,8 @@ feature -- Status report
 			if a_abstraction.is_attached or a_abstraction.is_expanded then
 				Result := factories.has (a_abstraction)
 			else
-				Result := True
+				Result := factories.has (type_of_type (attached_type (a_abstraction.type_id)))
 			end
-		end
-
-	can_satisfy (a_factory: FUNCTION [ANY, TUPLE, ANY]): BOOLEAN
-			-- <Precursor>
-		local
-			l_type: TYPE [detachable ANY]
-		do
-			l_type := a_factory.generating_type.generic_parameter_type (2)
-			Result := across 1 |..| l_type.generic_parameter_count as it all has (l_type.generic_parameter_type (it.item)) end
 		end
 
 feature -- Extension (Factory)
@@ -143,7 +134,7 @@ feature -- Extension (Singleton)
 	extend_with_singleton (a_singleton: ANY)
 			-- Attach `a_singleton' with its type.
 		require
-			unregistered: not has (type_of_type (attached_type (a_singleton.generating_type.type_id)))
+			unregistered: not has (a_singleton.generating_type)
 		do
 			factories.put (agent identity (a_singleton), type_of_type (attached_type (a_singleton.generating_type.type_id)))
 		ensure
