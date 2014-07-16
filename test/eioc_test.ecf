@@ -8,7 +8,7 @@
 		<precompile name="base_pre" location="$ISE_PRECOMP/base-safe.ecf"/>
 		<library name="base" location="$ISE_LIBRARY/library/base/base-safe.ecf"/>
 		<library name="eioc" location="..\library\eioc.ecf"/>
-		<library name="testing" location="C:\Program Files\Eiffel Software\EiffelStudio 14.05 GPL\library\testing\testing-safe.ecf"/>
+		<library name="testing" location="$ISE_EIFFEL/library/testing/testing-safe.ecf"/>
 		<cluster name="eioc_test" location=".\eioc_test" recursive="true"/>
 	</target>
 </system>
