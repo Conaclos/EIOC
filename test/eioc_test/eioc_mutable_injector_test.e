@@ -30,6 +30,25 @@ feature -- Test
 			assert ("factory for " + l_type.name + " exists.", l_injector.has (l_type))
 		end
 
+	test_is_obtainable
+		note
+			testing:  "covers/{EIOC_MUTABLE_INJECTOR}.is_obtainable"
+		local
+			l_injector: EIOC_MUTABLE_INJECTOR
+			l_type: TYPE [detachable like new_cell]
+		do
+			create l_injector
+
+			l_type := {detachable like new_cell}
+			assert ("detachable type is obtainable.", l_injector.is_obtainable (l_type))
+
+			l_type := {like new_cell}
+			assert ("attached type unregistred is not obtainable.", not l_injector.is_obtainable (l_type))
+
+			l_injector.extend (agent new_cell)
+			assert ("attached type registred is obtainable.", l_injector.is_obtainable (l_type))
+		end
+
 	test_can_satisfy
 			-- Test factory with optional dependency, non-optional dependency and without dependency.
 		note
