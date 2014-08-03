@@ -59,7 +59,7 @@ feature -- Access (Instance)
 			-- <Precursor>
 		do
 			if a_factory.open_count = 0 then
-				Result := a_factory (Void)
+				Result := a_factory ([])
 			else
 				Result := a_factory (dependencies (a_factory))
 			end
@@ -151,7 +151,7 @@ feature -- Extension (Singleton)
 		do
 			put (agent identity (a_singleton), a_abstraction)
 		ensure
-			inserted: attached maybe_item (a_abstraction) as l_factory and then l_factory.item (Void) = a_singleton
+			inserted: attached maybe_item (a_abstraction) as l_factory and then l_factory.item ([]) = a_singleton
 		end
 
 feature {NONE} -- Implementation
