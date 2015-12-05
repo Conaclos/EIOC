@@ -65,7 +65,7 @@ feature -- Access (Instance)
 
 feature -- Access (Factory)
 
-	maybe_item (a_abstraction: TYPE [ANY]): detachable FUNCTION [ANY, TUPLE, ANY]
+	maybe_factory (a_abstraction: TYPE [ANY]): detachable FUNCTION [ANY, TUPLE, ANY]
 			-- Factory attached to `a_abstraction',
 			-- or Void if `a_abstraction' is not registered.
 		do
@@ -76,17 +76,41 @@ feature -- Access (Factory)
 					{ISE_RUNTIME}.type_conforms_to (Result.generating_type.generic_parameter_type (3).type_id, a_abstraction.type_id)
 		end
 
-	item (a_abstraction: TYPE [ANY]): FUNCTION [ANY, TUPLE, ANY]
+	maybe_item (a_abstraction: TYPE [ANY]): detachable FUNCTION [ANY, TUPLE, ANY]
+			-- `maybe_factory'.
+		obsolete
+			"Use `maybe_factory' instead. (2015 December)"
+		do
+			Result := maybe_factory (a_abstraction)
+		ensure
+			has_a_abstraction_equivalence: has (a_abstraction) = (Result /= Void)
+			conforming_types: Result /= Void implies
+					{ISE_RUNTIME}.type_conforms_to (Result.generating_type.generic_parameter_type (3).type_id, a_abstraction.type_id)
+		end
+
+	factory (a_abstraction: TYPE [ANY]): FUNCTION [ANY, TUPLE, ANY] assign put
 			-- Factory attached to `a_abstraction'.
 		require
 			registered: has (a_abstraction)
 		do
-			if attached maybe_item (a_abstraction) as l_factory then
+			if attached maybe_factory (a_abstraction) as l_factory then
 				Result := l_factory
 			else
 				check has_factory: False then end
 					-- Given by `registered'.
 			end
+		ensure
+			conforming_types: {ISE_RUNTIME}.type_conforms_to (Result.generating_type.generic_parameter_type (3).type_id, a_abstraction.type_id)
+		end
+
+	item (a_abstraction: TYPE [ANY]): FUNCTION [ANY, TUPLE, ANY]
+			-- `factory'.
+		obsolete
+			"Use `factory' instead. (2015 December)"
+		require
+			registered: has (a_abstraction)
+		do
+			Result := factory (a_abstraction)
 		ensure
 			conforming_types: {ISE_RUNTIME}.type_conforms_to (Result.generating_type.generic_parameter_type (3).type_id, a_abstraction.type_id)
 		end
@@ -114,7 +138,7 @@ feature -- Extension (Factory)
 			factories.put (a_factory, a_factory.generating_type.generic_parameter_type (3))
 		ensure
 			inserted: attached {TYPE [ANY]} a_factory.generating_type.generic_parameter_type (3) as l_result_type and then
-					maybe_item (l_result_type) = a_factory
+					maybe_factory (l_result_type) = a_factory
 		end
 
 	put (a_factory: FUNCTION [ANY, TUPLE, ANY]; a_abstraction: TYPE [ANY])
@@ -126,7 +150,7 @@ feature -- Extension (Factory)
 		do
 			factories.put (a_factory, a_abstraction)
 		ensure
-			inserted: maybe_item (a_abstraction) = a_factory
+			inserted: maybe_factory (a_abstraction) = a_factory
 		end
 
 feature -- Extension (Singleton)
@@ -153,7 +177,7 @@ feature -- Extension (Singleton)
 		do
 			put (agent identity (a_singleton), a_abstraction)
 		ensure
-			inserted: attached maybe_item (a_abstraction) as l_factory and then l_factory.item ([]) = a_singleton
+			inserted: attached maybe_factory (a_abstraction) as l_factory and then l_factory.item ([]) = a_singleton
 		end
 
 feature {NONE} -- Implementation
