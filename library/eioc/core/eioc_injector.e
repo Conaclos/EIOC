@@ -1,8 +1,6 @@
 note
 	description: "Read-only injector."
 	author: "Victorien Elvinger"
-	date: "$Date$"
-	revision: "$Revision$"
 
 deferred class
 	EIOC_INJECTOR

@@ -1,8 +1,6 @@
 note
 	description: "Mutable injector allowing to provide singletons and factories."
 	author: "Victorien Elvinger"
-	date: "$Date$"
-	revision: "$Revision$"
 
 class
 	EIOC_MUTABLE_INJECTOR
