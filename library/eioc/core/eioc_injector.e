@@ -29,7 +29,7 @@ feature -- Access (Instance)
 		deferred end
 
 	instance_from (a_factory: FUNCTION [ANY, TUPLE, ANY]): ANY
-			-- Use `a_factory' for reslt creation
+			-- Use `a_factory' for result creation
 			--
 			-- Future signature: instance (a_factory: FUNCTION [ANY, TUPLE, ?]): ?
 		require

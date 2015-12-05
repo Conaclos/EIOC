@@ -134,6 +134,8 @@ feature -- Extension (Singleton)
 	extend_with_singleton (a_singleton: ANY)
 			-- Attach `a_singleton' with its type.
 		require
+			has_referential_transparency: a_singleton = a_singleton
+				-- Reject NaN
 			unregistered: not has (a_singleton.generating_type)
 		do
 			factories.put (agent identity (a_singleton), type_of_type (attached_type (a_singleton.generating_type.type_id)))
@@ -144,6 +146,8 @@ feature -- Extension (Singleton)
 	put_singleton (a_singleton: ANY; a_abstraction: TYPE [ANY])
 			-- Attach `a_singleton' with `a_abstraction'.
 		require
+			has_referential_transparency: a_singleton = a_singleton
+				-- Reject NaN
 			unregistered: not has (a_abstraction)
 			conforming_types: {ISE_RUNTIME}.type_conforms_to (a_singleton.generating_type.type_id, a_abstraction.type_id)
 		do
