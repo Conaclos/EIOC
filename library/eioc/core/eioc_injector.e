@@ -45,7 +45,7 @@ feature -- Status report
 		deferred
 		end
 
-	is_obtainable (a_abstraction: TYPE [detachable ANY]): BOOLEAN
+	frozen is_obtainable (a_abstraction: TYPE [detachable ANY]): BOOLEAN
 			-- Is an instance of `a_abstraction' obtainable?
 			-- An instance of a detachable reference type is always obtainable (Void).
 		do
@@ -55,7 +55,7 @@ feature -- Status report
 			not_detachable_reference_type_implication: (a_abstraction.is_attached or a_abstraction.is_expanded) implies Result = has (a_abstraction)
 		end
 
-	can_satisfy (a_factory: FUNCTION [ANY, TUPLE, ANY]): BOOLEAN
+	frozen can_satisfy (a_factory: FUNCTION [ANY, TUPLE, ANY]): BOOLEAN
 			-- Has dependencies of `a_factory'?
 		local
 			l_type: TYPE [detachable ANY]
