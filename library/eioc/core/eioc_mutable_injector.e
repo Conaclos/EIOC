@@ -27,7 +27,7 @@ create
 feature {NONE} -- Creation
 
 	default_create
-			-- Create a default injector.
+			-- Create an empty injector.
 		do
 			create factories.make (20)
 		end
@@ -156,7 +156,7 @@ feature -- Extension (Factory)
 feature -- Extension (Singleton)
 
 	extend_with_singleton (a_singleton: ANY)
-			-- Attach `a_singleton' with its type.
+			-- Attach `a_singleton' with its runtime type.
 		require
 			has_referential_transparency: a_singleton = a_singleton
 				-- Reject NaN
@@ -187,6 +187,9 @@ feature {NONE} -- Implementation
 
 	frozen identity (a_value: ANY): ANY
 			-- `a_value'.
+		require
+			has_referential_transparency: a_value = a_value
+				-- Reject NaN
 		do
 			Result := a_value
 		ensure
