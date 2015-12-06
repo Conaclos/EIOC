@@ -29,7 +29,7 @@ feature -- Access (Instance)
 		deferred end
 
 	instance_from (a_factory: FUNCTION [ANY, TUPLE, ANY]): ANY
-			-- Use `a_factory' for result creation
+			-- Use `a_factory' for result creation.
 			--
 			-- Future signature: instance (a_factory: FUNCTION [ANY, TUPLE, ?]): ?
 		require
@@ -46,12 +46,13 @@ feature -- Status report
 		end
 
 	is_obtainable (a_abstraction: TYPE [detachable ANY]): BOOLEAN
-			-- Is `a_abstraction' obtainable from `maybe_instance'?
+			-- Is an instance of `a_abstraction' obtainable?
+			-- An instance of a detachable reference type is always obtainable (Void).
 		do
 			Result := not (a_abstraction.is_attached or a_abstraction.is_expanded) or has (a_abstraction)
 		ensure
-			detachable_type_implication: (not (a_abstraction.is_attached or a_abstraction.is_expanded)) implies Result
-			not_detachable_type_implication: (a_abstraction.is_attached or a_abstraction.is_expanded) implies Result = has (a_abstraction)
+			detachable_reference_type_is_obtainable: (not (a_abstraction.is_attached or a_abstraction.is_expanded)) implies Result
+			not_detachable_reference_type_implication: (a_abstraction.is_attached or a_abstraction.is_expanded) implies Result = has (a_abstraction)
 		end
 
 	can_satisfy (a_factory: FUNCTION [ANY, TUPLE, ANY]): BOOLEAN
