@@ -11,7 +11,7 @@ feature -- Access (Instance)
 			-- Instance of type `a_abstraction'.
 			--
 			-- Will be made obsolete when Eiffel typing context will be available.
-			-- `instance'will be then more permissive.
+			-- `instance' will be then more permissAive.
 			-- Use `instance' instead if possible.
 		require
 			is_obtainable: is_obtainable (a_abstraction)
@@ -31,7 +31,7 @@ feature -- Access (Instance)
 	instance_from (a_factory: FUNCTION [ANY, TUPLE, ANY]): ANY
 			-- Use `a_factory' for result creation.
 			--
-			-- Future signature: instance (a_factory: FUNCTION [ANY, TUPLE, ?]): ?
+			-- Future signature: instance_from (a_factory: FUNCTION [ANY, TUPLE, ?]): ?
 		require
 			resolvable: can_satisfy (a_factory)
 		deferred end
@@ -39,7 +39,7 @@ feature -- Access (Instance)
 feature -- Status report
 
 	has (a_abstraction: TYPE [detachable ANY]): BOOLEAN
-			-- Has a factory attached to `a_abstraction'?
+			-- Is `a_abstraction' registered?
 			--
 			-- Attachment mark is not considered.
 		deferred
