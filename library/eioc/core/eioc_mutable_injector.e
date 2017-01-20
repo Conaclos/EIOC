@@ -24,12 +24,41 @@ inherit {NONE}
 create
 	default_create
 
+create {EIOC_MUTABLE_INJECTOR}
+	make_with_parent
+
 feature {NONE} -- Creation
 
 	default_create
 			-- Create an empty injector.
 		do
 			create factories.make (20)
+		ensure then
+			is_orphelan: parent = Void
+		end
+
+	make_with_parent (a_parent: EIOC_INJECTOR)
+			-- Create an injector with `a_parent' as `parent'.
+			--
+			-- Use `new_heir' instead.
+		do
+			default_create
+			parent := a_parent
+		ensure
+			parent_effect: parent = a_parent
+		end
+
+feature -- Access (Hierarchy)
+
+	parent: detachable EIOC_INJECTOR
+			-- Parent injector.
+
+	new_heir: EIOC_MUTABLE_INJECTOR
+			-- New child of the current injector.
+		do
+			create Result.make_with_parent (Current)
+		ensure
+			has_parent_relationship: Result.parent = Current
 		end
 
 feature -- Access (Instance)
@@ -39,6 +68,8 @@ feature -- Access (Instance)
 		do
 			if attached factories.item (type_of_type (attached_type (a_abstraction.type_id))) as l_factory then
 				Result := instance_from (l_factory)
+			elseif attached parent as l_parent then
+				Result := l_parent.maybe_instance (a_abstraction)
 			end
 		end
 
@@ -47,6 +78,8 @@ feature -- Access (Instance)
 		do
 			if attached factories.item (a_abstraction) as l_factory then
 				Result := instance_from (l_factory)
+			elseif attached parent as l_parent then
+				Result := l_parent.instance (a_abstraction)
 			else
 				check instance_exists: False then end
 					-- Given by precondition `registered'.
@@ -58,6 +91,8 @@ feature -- Access (Instance)
 		do
 			if a_factory.open_count = 0 then
 				Result := a_factory ([])
+			elseif attached parent as l_parent then
+				Result := l_parent.instance_from (a_factory)
 			else
 				Result := a_factory (dependencies (a_factory))
 			end
@@ -67,7 +102,7 @@ feature -- Access (Factory)
 
 	maybe_factory (a_abstraction: TYPE [ANY]): detachable FUNCTION [ANY, TUPLE, ANY]
 			-- Factory attached to `a_abstraction',
-			-- or Void if `a_abstraction' is not registered.
+			-- or Void if `a_abstraction' is not registered in the current injector.
 		do
 			Result := factories.item (a_abstraction)
 		ensure
@@ -89,7 +124,7 @@ feature -- Access (Factory)
 		end
 
 	factory (a_abstraction: TYPE [ANY]): FUNCTION [ANY, TUPLE, ANY] assign put
-			-- Factory attached to `a_abstraction'.
+			-- Factory attached to `a_abstraction' in the current injector.
 		require
 			registered: has (a_abstraction)
 		do
