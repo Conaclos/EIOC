@@ -42,8 +42,7 @@ feature -- Status report
 			-- Is `a_abstraction' registered?
 			--
 			-- Attachment mark is not considered.
-		deferred
-		end
+		deferred end
 
 	frozen is_obtainable (a_abstraction: TYPE [detachable ANY]): BOOLEAN
 			-- Is an instance of `a_abstraction' obtainable?
