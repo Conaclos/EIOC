@@ -28,10 +28,10 @@ feature -- Access (Instance)
 			registered: has (a_abstraction)
 		deferred end
 
-	instance_from (a_factory: FUNCTION [ANY, TUPLE, ANY]): ANY
+	instance_from (a_factory: FUNCTION [ANY]): ANY
 			-- Use `a_factory' for result creation.
 			--
-			-- Future signature: instance_from (a_factory: FUNCTION [ANY, TUPLE, ?]): ?
+			-- Future signature: instance_from (a_factory: FUNCTION [?]): ?
 		require
 			resolvable: can_satisfy (a_factory)
 		deferred end
@@ -54,7 +54,7 @@ feature -- Status report
 			not_detachable_reference_type_implication: (a_abstraction.is_attached or a_abstraction.is_expanded) implies Result = has (a_abstraction)
 		end
 
-	frozen can_satisfy (a_factory: FUNCTION [ANY, TUPLE, ANY]): BOOLEAN
+	frozen can_satisfy (a_factory: FUNCTION [ANY]): BOOLEAN
 			-- Has dependencies of `a_factory'?
 		local
 			l_type: TYPE [detachable ANY]

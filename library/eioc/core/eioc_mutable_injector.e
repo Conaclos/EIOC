@@ -86,7 +86,7 @@ feature -- Access (Instance)
 			end
 		end
 
-	instance_from (a_factory: FUNCTION [ANY, TUPLE, ANY]): ANY
+	instance_from (a_factory: FUNCTION [ANY]): ANY
 			-- <Precursor>
 		do
 			if a_factory.open_count = 0 then
@@ -100,7 +100,7 @@ feature -- Access (Instance)
 
 feature -- Access (Factory)
 
-	maybe_factory (a_abstraction: TYPE [ANY]): detachable FUNCTION [ANY, TUPLE, ANY]
+	maybe_factory (a_abstraction: TYPE [ANY]): detachable FUNCTION [ANY]
 			-- Factory attached to `a_abstraction',
 			-- or Void if `a_abstraction' is not registered in the current injector.
 		do
@@ -111,7 +111,7 @@ feature -- Access (Factory)
 					{ISE_RUNTIME}.type_conforms_to (Result.generating_type.generic_parameter_type (3).type_id, a_abstraction.type_id)
 		end
 
-	maybe_item (a_abstraction: TYPE [ANY]): detachable FUNCTION [ANY, TUPLE, ANY]
+	maybe_item (a_abstraction: TYPE [ANY]): detachable FUNCTION [ANY]
 			-- `maybe_factory'.
 		obsolete
 			"Use `maybe_factory' instead. (2015 December)"
@@ -123,7 +123,7 @@ feature -- Access (Factory)
 					{ISE_RUNTIME}.type_conforms_to (Result.generating_type.generic_parameter_type (3).type_id, a_abstraction.type_id)
 		end
 
-	factory (a_abstraction: TYPE [ANY]): FUNCTION [ANY, TUPLE, ANY] assign put
+	factory (a_abstraction: TYPE [ANY]): FUNCTION [ANY] assign put
 			-- Factory attached to `a_abstraction' in the current injector.
 		require
 			registered: has (a_abstraction)
@@ -138,7 +138,7 @@ feature -- Access (Factory)
 			conforming_types: {ISE_RUNTIME}.type_conforms_to (Result.generating_type.generic_parameter_type (3).type_id, a_abstraction.type_id)
 		end
 
-	item (a_abstraction: TYPE [ANY]): FUNCTION [ANY, TUPLE, ANY]
+	item (a_abstraction: TYPE [ANY]): FUNCTION [ANY]
 			-- `factory'.
 		obsolete
 			"Use `factory' instead. (2015 December)"
@@ -164,7 +164,7 @@ feature -- Status report
 
 feature -- Extension (Factory)
 
-	extend (a_factory: FUNCTION [ANY, TUPLE, ANY])
+	extend (a_factory: FUNCTION [ANY])
 			-- <Precursor>
 		require
 			unregistered: not has (a_factory.generating_type.generic_parameter_type (3))
@@ -176,7 +176,7 @@ feature -- Extension (Factory)
 					maybe_factory (l_result_type) = a_factory
 		end
 
-	put (a_factory: FUNCTION [ANY, TUPLE, ANY]; a_abstraction: TYPE [ANY])
+	put (a_factory: FUNCTION [ANY]; a_abstraction: TYPE [ANY])
 			-- Attach `a_factory' with `a_abstraction'.
 		require
 			unregistered: not has (a_abstraction)
@@ -217,7 +217,7 @@ feature -- Extension (Singleton)
 
 feature {NONE} -- Implementation
 
-	factories: HASH_TABLE [FUNCTION [ANY, TUPLE, ANY], TYPE [detachable ANY]]
+	factories: HASH_TABLE [FUNCTION [ANY], TYPE [detachable ANY]]
 			-- Types to factories.
 
 	frozen identity (a_value: ANY): ANY
@@ -231,7 +231,7 @@ feature {NONE} -- Implementation
 			is_a_value: Result = a_value
 		end
 
-	dependencies (a_factory: FUNCTION [ANY, TUPLE, ANY]): TUPLE
+	dependencies (a_factory: FUNCTION [ANY]): TUPLE
 			-- Tuple of instance matching with dependency types.
 		require
 			resolvable: can_satisfy (a_factory)
